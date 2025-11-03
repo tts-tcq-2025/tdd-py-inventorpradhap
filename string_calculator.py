@@ -19,9 +19,12 @@ class StringCalculator:
         return numbers.split(",")
 
     def _check_for_negatives(self, num_list):
-        negatives = [int(num) for num in num_list if int(num) < 0]
+        negatives = self._find_negatives(num_list)
         if negatives:
             raise ValueError(f"negatives not allowed: {', '.join(map(str, negatives))}")
+
+    def _find_negatives(self, num_list):
+        return [int(num) for num in num_list if int(num) < 0]
 
     def _sum_numbers(self, num_list):
         return sum(int(num) for num in num_list if int(num) <= 1000)
