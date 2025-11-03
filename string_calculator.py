@@ -1,0 +1,36 @@
+import re
+
+class StringCalculator:
+    def add(self, numbers):
+        if numbers == "":
+            return 0
+        numbers = self._normalize_delimiters(numbers)
+        num_list = self._split_numbers(numbers)
+        self._check_for_negatives(num_list)
+        return self._sum_numbers(num_list)
+
+    def _normalize_delimiters(self, numbers):
+        if numbers.startswith("//"):
+            delimiter_section, numbers = numbers.split("\n", 1)
+            delimiter = self._extract_delimiter(delimiter_section)
+            numbers = numbers.replace(delimiter, ",")
+        return numbers.replace("\n", ",")
+
+    def _extract_delimiter(self, delimiter_section):
+        if delimiter_section.startswith("//["):
+            return re.search(r"//\[(.*?)\]", delimiter_section).group(1)
+        return delimiter_section[2]
+
+    def _split_numbers(self, numbers):
+        return numbers.split(",")
+
+    def _check_for_negatives(self, num_list):
+        negatives = self._find_negatives(num_list)
+        if negatives:
+            raise ValueError(f"negatives not allowed: {', '.join(map(str, negatives))}")
+
+    def _find_negatives(self, num_list):
+        return [int(num) for num in num_list if int(num) < 0]
+
+    def _sum_numbers(self, num_list):
+        return sum(int(num) for num in num_list if int(num) <= 1000)
