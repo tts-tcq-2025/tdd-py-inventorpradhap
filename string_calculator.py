@@ -11,9 +11,15 @@ class StringCalculator:
 
     def _normalize_delimiters(self, numbers):
         if numbers.startswith("//"):
-            delimiter = re.search(r"//\[(.*?)\]\n", numbers).group(1)
-            numbers = numbers.split("\n", 1)[1].replace(delimiter, ",")
+            delimiter_section, numbers = numbers.split("\n", 1)
+            delimiter = self._extract_delimiter(delimiter_section)
+            numbers = numbers.replace(delimiter, ",")
         return numbers.replace("\n", ",")
+
+    def _extract_delimiter(self, delimiter_section):
+        if delimiter_section.startswith("//["):
+            return re.search(r"//\[(.*?)\]", delimiter_section).group(1)
+        return delimiter_section[2]
 
     def _split_numbers(self, numbers):
         return numbers.split(",")
