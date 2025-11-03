@@ -7,7 +7,7 @@ class StringCalculator:
         numbers = self._normalize_delimiters(numbers)
         num_list = self._split_numbers(numbers)
         self._check_for_negatives(num_list)
-        return sum(int(num) for num in num_list if int(num) <= 1000)
+        return self._sum_numbers(num_list)
 
     def _normalize_delimiters(self, numbers):
         if numbers.startswith("//"):
@@ -22,3 +22,6 @@ class StringCalculator:
         negatives = [int(num) for num in num_list if int(num) < 0]
         if negatives:
             raise ValueError(f"negatives not allowed: {', '.join(map(str, negatives))}")
+
+    def _sum_numbers(self, num_list):
+        return sum(int(num) for num in num_list if int(num) <= 1000)
